@@ -2,60 +2,99 @@ import React, {Component} from "react"
 import PropTypes from "prop-types"
 import moment from "moment"
 import {
+  ComposedChart,
   LineChart,
+  BarChart,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
+  Bar,
   Line,
   Brush,
   AreaChart,
   Area
 } from "recharts"
+// import {step, linear, polynomial} from "everpolate"
 
 export default class MyGraph extends Component {
   static propTypes = {
-    rate: PropTypes.object.isRequired
+    range: PropTypes.object.isRequired,
+    editStartRange: PropTypes.func.isRequired,
+    editEndRange: PropTypes.func.isRequired,
+
+    rates: PropTypes.array.isRequired
   }
 
-  render() {
+  /** Returns data which states what each day adds to the bank balance */
+  ratesToData() {
+    let rates = this.props.rates
     let data = []
-    for (let i = 0; i < 100; i++) {
-      data.push({date: undefined, money: undefined})
-    }
-    data = data.map((d, i) => {
-      return {
-        date: moment().add({days: i}).format("MM-DD"),
-        money: 50 * Math.sin(i)
+    // initialization
+    for (let i = 0; i < 365; i++)
+      data.push({
+        date: moment().add({days: i}),
+        amount: 0
+      })
+    for (let rate of rates) {
+      for (let i = 0; i < 365; i += rate.recurrence) {
+        data[i].amount += rate.amount
       }
-    })
+    }
+    return data
+  }
+
+  //TODO I have no idea how to be able to get this up to the redux state level
+  handleStartRange() {}
+  handleEndRange() {}
+
+  render() {
+    let data = this.ratesToData()
+
+    let currentBalance = 0
+    let graphData = []
+    for (let i = 0; i < 365; i++) {
+      if (data[i].amount !== 0) currentBalance += data[i].amount
+      graphData.push({
+        date: moment().add({days: i}).format("MM-DD"),
+        payment: data[i].amount,
+        amount: currentBalance
+      })
+    }
+
+    console.log(this.props.range)
 
     return (
       <div className="line-chart-wrapper">
-        <LineChart
+        <ComposedChart
           width={600}
           height={400}
-          data={data}
+          data={graphData}
           margin={{top: 40, right: 40, bottom: 20, left: 20}}
         >
           <CartesianGrid vertical={false} />
           <XAxis dataKey="date" label="Date" />
-          <YAxis domain={["auto", "auto"]} label="Stock Price" />
+          <YAxis domain={["auto", "auto"]} label="Bank Balance" />
           <Tooltip />
-          <Line dataKey="money" stroke="#ff7300" dot={false} />
-          <Brush dataKey="date" startIndex={data.length - 40}>
+          <Bar dataKey="payment" barSize={20} fill="#413ea0" />
+          <Line dataKey="amount" stroke="#ff7300" dot={false} />
+          <Brush
+            dataKey="date"
+            startIndex={this.props.range.start}
+            endIndex={this.props.range.end}
+          >
             <AreaChart>
               <CartesianGrid />
               <YAxis hide domain={["auto", "auto"]} />
               <Area
-                dataKey="money"
+                dataKey="amount"
                 stroke="#ff7300"
                 fill="#ff7300"
                 dot={false}
               />
             </AreaChart>
           </Brush>
-        </LineChart>
+        </ComposedChart>
       </div>
     )
   }

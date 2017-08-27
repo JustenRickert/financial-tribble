@@ -1,4 +1,4 @@
-const initialState = [{text: "income", amount: 1000, recurrence: 14}]
+const initialState = [{id: 0, text: "income", amount: 1000, recurrence: 14}]
 
 export default function rates(state = initialState, action) {
   switch (action.type) {
@@ -7,8 +7,8 @@ export default function rates(state = initialState, action) {
         {
           id: state.reduce((maxId, rate) => Math.max(rate.id, maxId), -1) + 1,
           text: action.text,
-          amount: action.amount,
-          recurrence: action.recurrence
+          amount: parseFloat(action.amount),
+          recurrence: parseInt(action.recurrence)
         },
         ...state
       ]
@@ -20,14 +20,15 @@ export default function rates(state = initialState, action) {
             ? {
                 ...rate,
                 text: action.text,
-                amount: action.amount,
-                recurrence: action.recurrence
+                amount: parseFloat(action.amount),
+                recurrence: parseInt(action.recurrence)
               }
             : rate
       )
 
     case "DELETE_RATE":
-      return state.filter(rate => rate.id !== action.id)
+      state = state.filter(rate => rate.id !== action.id)
+      return state
 
     default:
       return state

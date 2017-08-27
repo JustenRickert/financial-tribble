@@ -14,7 +14,8 @@ export default class Header extends Component {
   render() {
     return (
       <header className="header">
-        <h1>rates</h1>
+        <h1>Personal Finance Tool</h1>
+        <p>Hello! Input the amount of the recurring payments you make and the regularlity by which you make those payments, save it, then look at what you can expect your bank balance to be in the graph below.</p>
         <RateInputForm onSave={this.handleSave} />
       </header>
     )

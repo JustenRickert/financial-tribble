@@ -16,6 +16,12 @@ export default class RateInputForm extends Component {
     recurrence: this.props.recurrence || 1
   }
 
+  handleSaveButton = e => {
+    e.preventDefault()
+    this.setState({text: "", amount: 0, recurrence: 0})
+    this.props.onSave(this.state.text, this.state.amount, this.state.recurrence)
+  }
+
   handleSubmit = e => {
     if (e.which === 13) {
       e.preventDefault()
@@ -69,6 +75,10 @@ export default class RateInputForm extends Component {
               value={this.state.recurrence}
               onChange={this.handleRecurrenceChange}
             />
+            <br />
+            <button onClick={this.handleSaveButton}>
+              save
+            </button>
           </fieldset>
         </form>
       </header>

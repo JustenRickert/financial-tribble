@@ -14,7 +14,7 @@ export default class RateItem extends Component {
   state = {editing: false}
 
   handleDoubleClick = () => {
-    this.setState({editing: true})
+    if (!this.state.editing) this.setState({editing: true})
   }
 
   handleSave = (id, text, amount, recurrence) => {
@@ -34,7 +34,8 @@ export default class RateItem extends Component {
       element = (
         <RateInputForm
           text={rate.text}
-          amount={Number(rate.amount)}
+          amount={rate.amount}
+          recurrence={rate.recurrence}
           editing={this.state.editing}
           onSave={(text, amount, recurrence) =>
             this.handleSave(rate.id, text, amount, recurrence)}
