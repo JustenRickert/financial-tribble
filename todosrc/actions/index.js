@@ -8,4 +8,4 @@ export const completeAll = () => ({type: types.COMPLETE_ALL})
 export const clearCompleted = () => ({type: types.CLEAR_COMPLETED})
 
 export const addRate = (text, amount) => ({type: types.ADD_RATE, text, amount})
-export const deletRate = id => ({type: types.ADD_RATE, id})
+export const deleteRate = id => ({type: types.ADD_RATE, id})

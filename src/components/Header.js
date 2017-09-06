@@ -1,22 +1,31 @@
 import React, {Component} from "react"
 import PropTypes from "prop-types"
+
 import RateInputForm from "./RateInputForm"
 
 export default class Header extends Component {
   static propTypes = {
-    addRate: PropTypes.func.isRequired
+    actions: PropTypes.object.isRequired
   }
 
-  handleSave = (text, amount, recurrence) => {
-    if (text.length !== 0) this.props.addRate(text, amount, recurrence)
+  handleSave(text, amount, recurrence) {
+    if (text.length !== 0) this.props.actions.addRate(text, amount, recurrence)
   }
 
   render() {
+    console.log("render", this.props.actions)
     return (
       <header className="header">
         <h1>Personal Finance Tool</h1>
-        <p>Hello! Input the amount of the recurring payments you make and the regularlity by which you make those payments, save it, then look at what you can expect your bank balance to be in the graph below.</p>
-        <RateInputForm onSave={this.handleSave} />
+        <p>
+          Hello! Input the amount of the recurring payments you make and the
+          regularlity by which you make those payments, save it, then look at
+          what you can expect your bank balance to be in the graph below.
+        </p>
+        <RateInputForm
+          onSave={(text, amount, recurrence) =>
+            this.handleSave(text, amount, recurrence)}
+        />
       </header>
     )
   }

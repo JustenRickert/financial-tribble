@@ -19,10 +19,6 @@ import {
 
 export default class MyGraph extends Component {
   static propTypes = {
-    range: PropTypes.object.isRequired,
-    editStartRange: PropTypes.func.isRequired,
-    editEndRange: PropTypes.func.isRequired,
-
     rates: PropTypes.array.isRequired
   }
 
@@ -36,6 +32,7 @@ export default class MyGraph extends Component {
         date: moment().add({days: i}),
         amount: 0
       })
+    // set amount
     for (let rate of rates) {
       for (let i = 0; i < 365; i += rate.recurrence) {
         data[i].amount += rate.amount
@@ -45,8 +42,6 @@ export default class MyGraph extends Component {
   }
 
   //TODO I have no idea how to be able to get this up to the redux state level
-  handleStartRange() {}
-  handleEndRange() {}
 
   render() {
     let data = this.ratesToData()
@@ -56,7 +51,9 @@ export default class MyGraph extends Component {
     for (let i = 0; i < 365; i++) {
       if (data[i].amount !== 0) currentBalance += data[i].amount
       graphData.push({
-        date: moment().add({days: i}).format("MM-DD"),
+        date: moment()
+          .add({days: i})
+          .format("MM-DD"),
         payment: data[i].amount,
         amount: currentBalance
       })
@@ -78,11 +75,7 @@ export default class MyGraph extends Component {
           <Tooltip />
           <Bar dataKey="payment" barSize={20} fill="#413ea0" />
           <Line dataKey="amount" stroke="#ff7300" dot={false} />
-          <Brush
-            dataKey="date"
-            startIndex={this.props.range.start}
-            endIndex={this.props.range.end}
-          >
+          <Brush dataKey="date" startIndex={0} endIndex={40}>
             <AreaChart>
               <CartesianGrid />
               <YAxis hide domain={["auto", "auto"]} />

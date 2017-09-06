@@ -1,4 +1,6 @@
-const initialState = [{id: 0, text: "income", amount: 1000, recurrence: 14}]
+const initialState = [{id: 0, text: "income", amount: 1000, recurrence: 14},
+                      {id: 1, text: 'rent', amount: -500, recurrence: 30},
+                      {id: 2, text: 'food', amount: 60, recurrence: 7}]
 
 export default function rates(state = initialState, action) {
   switch (action.type) {
