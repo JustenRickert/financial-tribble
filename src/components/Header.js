@@ -13,7 +13,6 @@ export default class Header extends Component {
   }
 
   render() {
-    console.log("render", this.props.actions)
     return (
       <header className="header">
         <h1>Personal Finance Tool</h1>

@@ -1,3 +1,5 @@
+import moment from "moment"
+
 import account from "./account"
 
 describe("account reducer", () => {
@@ -13,13 +15,13 @@ describe("account reducer", () => {
       {
         name: "assets",
         transactions: [
-          {id: assetsId[0], date: "2017/09/01", amount: 12},
-          {id: assetsId[1], date: "2017/09/02", amount: 13}
+          {id: assetsId[0], date: moment(), amount: 12},
+          {id: assetsId[1], date: moment(), amount: 13}
         ]
       },
       {
         name: "expenses",
-        transactions: [{id: expensesId[0], date: "2017/09/01", amount: 20}]
+        transactions: [{id: expensesId[0], date: moment(), amount: 20}]
       }
     ])
   })
@@ -28,7 +30,7 @@ describe("account reducer", () => {
     const acc = account(undefined, {
       type: "ADD_TRANSACTION",
       name: "assets",
-      date: "2017/09/03",
+      date: moment(),
       amount: 14
     })
     const assetsId = acc
@@ -42,14 +44,14 @@ describe("account reducer", () => {
       {
         name: "assets",
         transactions: [
-          {id: assetsId[0], date: "2017/09/01", amount: 12},
-          {id: assetsId[1], date: "2017/09/02", amount: 13},
-          {id: assetsId[2], date: "2017/09/03", amount: 14}
+          {id: assetsId[0], date: moment(), amount: 12},
+          {id: assetsId[1], date: moment(), amount: 13},
+          {id: assetsId[2], date: moment(), amount: 14}
         ]
       },
       {
         name: "expenses",
-        transactions: [{id: expensesId[0], date: "2017/09/01", amount: 20}]
+        transactions: [{id: expensesId[0], date: moment(), amount: 20}]
       }
     ])
   })
@@ -74,13 +76,13 @@ describe("account reducer", () => {
       {
         name: "assets",
         transactions: [
-          {id: assetsId[1], date: "2017/09/02", amount: 13},
-          {id: assetsId[2], date: "2017/09/03", amount: 14}
+          {id: assetsId[1], date: moment(), amount: 13},
+          {id: assetsId[2], date: moment(), amount: 14}
         ]
       },
       {
         name: "expenses",
-        transactions: [{id: expensesId[0], date: "2017/09/01", amount: 20}]
+        transactions: [{id: expensesId[0], date: moment(), amount: 20}]
       }
     ])
   })

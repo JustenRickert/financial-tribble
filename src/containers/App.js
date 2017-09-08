@@ -9,7 +9,8 @@ import * as Actions from "../actions"
 import Header from "../components/Header"
 import RateSection from "../components/RateSection"
 import MyGraph from "../components/MyGraph"
-import TransactionForm from "../components/TransactionForm"
+import TransactionItemForm from "../components/TransactionItemForm"
+import TransactionSection from "../components/TransactionSection"
 
 /* MAIN */
 
@@ -18,10 +19,11 @@ const App = ({account, range, rates, actions}) => {
     <div>
       <BrowserRouter>
         <div>
-          <Link to="/">Home</Link>
-          <Link to="/old">Old</Link>
+          <Link to="/transactionform">Transaction Form</Link>
+          <br />
+          <Link to="/recurrenceform">Recurrence Form</Link>
           <Route
-            path="/old"
+            path="/recurrenceform"
             render={() => (
               <div>
                 <Header actions={actions} />
@@ -31,14 +33,14 @@ const App = ({account, range, rates, actions}) => {
             )}
           />
           <Route
-            path="/"
+            path="/transactionform"
             render={() => (
               <div>
-                <TransactionForm account={account} actions={actions} />
+                <TransactionItemForm actions={actions} />
+                <TransactionSection account={account} actions={actions} />
               </div>
             )}
           />
-          {/* <Header addRate={actions.addRate} /> */}
         </div>
       </BrowserRouter>
     </div>
@@ -49,13 +51,11 @@ App.propTypes = {
   account: PropTypes.array.isRequired,
   rates: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
-  /* range: PropTypes.object.isRequired*/
 }
 
 const mapStateToProps = state => ({
   account: state.account,
   rates: state.rates
-  /* range: state.range*/
 })
 
 const mapDispatchToProps = dispatch => ({

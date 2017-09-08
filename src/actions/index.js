@@ -21,7 +21,7 @@ export const addTransaction = (name, date, amount) => ({
   amount
 })
 export const editTransaction = (name, id, date, amount) => ({
-  type: "ADD_TRANSACTION",
+  type: "EDIT_TRANSACTION",
   name,
   id,
   date,

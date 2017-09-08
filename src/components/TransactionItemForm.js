@@ -5,9 +5,11 @@ import moment from "moment"
 
 import "react-datepicker/dist/react-datepicker.css"
 
+moment.locale("us", {longDateFormat: {L: "DD/MM/YYYY"}})
+
 export default class TransactionItemForm extends Component {
   static propTypes = {
-    onSave: PropTypes.func.isRequired
+    actions: PropTypes.object.isRequired
   }
 
   state = {
@@ -17,17 +19,19 @@ export default class TransactionItemForm extends Component {
     date: moment()
   }
 
-  handleSaveButton = e => {
-    e.preventDefault()
-    this.props.onSave(this.state.name, this.state.amount, this.state.date)
+  handleSaveButton = () => {
+    this.props.actions.addTransaction(
+      this.state.name,
+      this.state.date,
+      this.state.amount
+    )
     this.setState({name: "", amount: 0, date: moment()})
   }
 
   handleSubmit = e => {
     if (e.which === 13) {
       e.preventDefault()
-      this.setState({text: "", amount: 0, recurrence: moment()})
-      this.props.onSave(this.state.name, this.state.amount, this.state.date)
+      this.handleSaveButton()
     }
   }
 
@@ -37,34 +41,43 @@ export default class TransactionItemForm extends Component {
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.handleSubmit} onKeyDown={this.handleSubmit}>
-          <fieldset>
-            <label>Account name</label>
-            <input
-              name="name"
-              type="text"
-              value={this.state.name}
-              onChange={this.handleNameChange}
-            />
-            <br />
-            <label>Amount</label>
-            <input
-              name="amount"
-              type="number"
-              value={this.state.amount}
-              onChange={this.handleAmountChange}
-            />
-            <br />
-            <label>Date</label>
-            <DatePicker
-              selected={this.state.date}
-              onChange={this.handleDateChange}
-            />
-            <br />
-            <button onClick={this.handleSaveButton}>save</button>
-          </fieldset>
-        </form>
+      <header
+        style={{
+          backgroundColor: "#eee",
+          color: "#000",
+          borderRadius: 5,
+          padding: 20
+        }}
+        onKeyDown={this.handleSubmit}
+      >
+        <label>Account</label>
+        <br />
+        <input
+          style={{border: "none"}}
+          name="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleNameChange}
+        />
+        <br />
+        <label>Amount</label>
+        <br />
+        <input
+          style={{border: "none"}}
+          name="amount"
+          type="number"
+          value={this.state.amount}
+          onChange={this.handleAmountChange}
+        />
+        <br />
+        <label>Date</label>
+        <br />
+        <DatePicker
+          selected={this.state.date}
+          onChange={this.handleDateChange}
+        />
+        <br />
+        <button onClick={this.handleSaveButton}>save</button>
       </header>
     )
   }
